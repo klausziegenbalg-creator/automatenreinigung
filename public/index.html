@@ -1,0 +1,355 @@
+<head>
+  <meta charset="UTF-8" />
+  <title>Reiniger App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 16px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h1 { font-size: 28px; margin-bottom: 12px; }
+    h3 { margin: 0; }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    label {
+      display: block;
+      margin-top: 0;
+      font-weight: 500;
+    }
+
+    .box {
+      border-top: 1px solid #ccc;
+      margin-top: 20px;
+      padding-top: 16px;
+    }
+
+    .status {
+      margin-top: 10px;
+      min-height: 22px;
+      font-weight: bold;
+    }
+
+    .last {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      margin-top: 16px;
+      padding: 6px 0;
+    }
+
+    .arrow {
+      font-size: 18px;
+      width: 24px;
+      text-align: right;
+    }
+
+    /* TASK */
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 8px 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background: #fafafa;
+      cursor: pointer;
+    }
+
+    .task input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+      pointer-events: none;
+    }
+
+    .bestaende-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .bestaende-item {
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      background: #fafafa;
+    }
+
+    .order-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .order-btn {
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background: #f5f5f5;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .photo-box {
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    /* ===== FIX 1 – STATUS & BUTTON FEEDBACK ===== */
+
+    #wochenStatus {
+      margin-top: 10px;
+      min-height: 22px;
+      font-weight: bold;
+    }
+
+    #btnWochenwartung.success {
+      background: #2e7d32 !important;
+      border-color: #2e7d32 !important;
+      color: #ffffff !important;
+    }
+
+    #btnWochenwartung.error {
+      background: #c62828 !important;
+      border-color: #c62828 !important;
+      color: #ffffff !important;
+    }
+  </style>
+</head>
+
+
+<body>
+
+<h1>Reiniger App</h1>
+
+<input id="pin" placeholder="PIN eingeben" />
+<button onclick="login()">Login</button>
+<div id="status" class="status"></div>
+
+<div class="box">
+  <label>Stadt</label>
+  <select id="stadtSelect"><option>– bitte einloggen –</option></select>
+  <label>Center</label>
+  <select id="centerSelect"><option>– bitte einloggen –</option></select>
+  <label>Automat</label>
+  <select id="automatSelect"><option>– bitte einloggen –</option></select>
+</div>
+
+<div id="lastCleaning" class="last"></div>
+
+<div id="cleaningForm" class="box" style="display:none">
+
+  <label for="datum">Datum</label>
+  <input type="date" id="datum" />
+
+  <!-- 2. Aufgaben -->
+  <div class="section-header" onclick="toggleSection('sec2', this)">
+    <h3>2. Aufgaben pro Automat</h3><div class="arrow">▼</div>
+  </div>
+  <div id="sec2" style="display:none">
+    <label class="task"><input type="checkbox" id="zucker"><span>Zucker aufgefüllt</span></label>
+    <label class="task"><input type="checkbox" id="wasser"><span>Wasser aufgefüllt</span></label>
+    <label class="task"><input type="checkbox" id="staebeAuf"><span>Stäbe aufgefüllt</span></label>
+    <label class="task"><input type="checkbox" id="zuckerfach"><span>Zuckerfach gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="faecher"><span>Alle Fächer gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="abwasser"><span>Abwasser entleert</span></label>
+    <label class="task"><input type="checkbox" id="produktionsraum"><span>Produktionsraum gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="messer"><span>Messer + Rädchen gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="roboterarm"><span>Roboterarm gründlich gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="sieb"><span>Sieb oben gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="auffangschale"><span>Auffangschale gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="aufbewahrung"><span>Aufbewahrungsfach aufgeräumt</span></label>
+    <label class="task"><input type="checkbox" id="aussen"><span>Automat außen gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="scheiben"><span>Scheiben gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="brennerkopf"><span>Brennerkopf gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="duese"><span>Düse hinter Brennerkopf gereinigt</span></label>
+  </div>
+
+  <!-- 3. Funktionsprüfung -->
+  <div class="section-header" onclick="toggleSection('sec3', this)">
+    <h3>3. Funktionsprüfung</h3><div class="arrow">▼</div>
+  </div>
+  <div id="sec3" style="display:none">
+    <label class="task"><input type="checkbox" id="befeuchtung"><span>Befeuchtungstest</span></label>
+    <label class="task"><input type="checkbox" id="reinigungstest"><span>Reinigungstest</span></label>
+    <label class="task"><input type="checkbox" id="neuer_stab"><span>Neuen Stab genommen</span></label>
+    <label class="task"><input type="checkbox" id="roboterarm_90grad"><span>Roboterarm im 90°-Winkel</span></label>
+    <label class="task"><input type="checkbox" id="kreditkarte_ok"><span>Kreditkartensystem OK</span></label>
+    <label class="task"><input type="checkbox" id="geldschein_ok"><span>Geldschein-System OK</span></label>
+    <label class="task"><input type="checkbox" id="material_eingetragen"><span>Material im System eingetragen</span></label>
+    <label>Auffälligkeiten</label>
+    <textarea id="auffaelligkeiten"></textarea>
+  </div>
+
+  <!-- 4. Bestände (unverändert) -->
+  <div class="section-header" onclick="toggleSection('sec4', this)">
+    <h3>4. Bestände</h3><div class="arrow">▼</div>
+  </div>
+  <div id="sec4" style="display:none">
+    <div class="bestaende-grid">
+      <div class="bestaende-item"><label>Roter Zucker</label><input type="number" step="0.5" id="zucker_rot"></div>
+      <div class="bestaende-item"><label>Gelber Zucker</label><input type="number" step="0.5" id="zucker_gelb"></div>
+      <div class="bestaende-item"><label>Blauer Zucker</label><input type="number" step="0.5" id="zucker_blau"></div>
+      <div class="bestaende-item"><label>Weißer Zucker</label><input type="number" step="0.5" id="zucker_weiss"></div>
+      <div class="bestaende-item"><label>Stäbe (Pakete)</label><input type="number" step="0.5" id="staebe"></div>
+    </div>
+  </div>
+
+  <!-- 5. Bestellungen (unverändert) -->
+  <div class="section-header" onclick="toggleSection('sec5', this)">
+    <h3>5. Bestellungen</h3><div class="arrow">▼</div>
+  </div>
+  <div id="sec5" style="display:none">
+    <div class="order-grid">
+      <button class="order-btn">🍓 Rot</button>
+      <button class="order-btn">🍭 Gelb</button>
+      <button class="order-btn">🫐 Blau</button>
+      <button class="order-btn">🍭 Weiß</button>
+      <button class="order-btn">🧊 Stäbe</button>
+    </div>
+  </div>
+
+  <!-- 6. Wochenwartung -->
+  <!-- 6. Wochenwartung -->
+<div class="section-header" onclick="toggleSection('sec6', this)">
+  <h3>6. Wochenwartung</h3>
+  <div class="arrow">▼</div>
+</div>
+
+<div id="sec6" style="display:none">
+
+  <label class="task">
+    <input type="checkbox" id="wk_brennerkopf_oeffnen">
+    <span>Brennerkopf reinigen & öffnen</span>
+  </label>
+  <div class="photo-box">
+    <input type="file" accept="image/*" capture="environment">
+  </div>
+
+  <label class="task">
+    <input type="checkbox" id="wk_wasserbehaelter_reinigen">
+    <span>Wasserbehälter Frischwasser leeren und reinigen</span>
+  </label>
+  <div class="photo-box">
+    <input type="file" accept="image/*" capture="environment">
+  </div>
+
+  <label class="task">
+    <input type="checkbox" id="wk_entkalkung_frischwasser">
+    <span>Entkalkung der Frischwasseranlage</span>
+  </label>
+  <div class="photo-box">
+    <input type="file" accept="image/*" capture="environment">
+  </div>
+
+  <label class="task">
+    <input type="checkbox" id="wk_brenner_rundum">
+    <span>Brenner rund herum reinigen</span>
+  </label>
+  <div class="photo-box">
+    <input type="file" accept="image/*" capture="environment">
+  </div>
+
+  <button
+    type="button"
+    id="btnWochenwartung"
+    onclick="saveWochenWartung()">
+    Wochenwartung speichern
+  </button>
+
+  <div id="wochenStatus" class="status"></div>
+</div>
+
+
+  <!-- 7. Wartung (unverändert) -->
+  <div class="section-header" onclick="toggleSection('sec7', this); onWartungToggle();">
+    <h3>7. Reparaturen / Wartung</h3><div class="arrow">▼</div>
+  </div>
+  <div id="sec7" style="display:none">
+    <label for="wartungSelect">Wartungselement (optional)</label>
+    <select id="wartungSelect" disabled>
+      <option value="">– wird geladen … –</option>
+    </select>
+
+    <label for="wartungFreitext">oder Freitext (optional)</label>
+    <input id="wartungFreitext" type="text"/>
+
+    <label for="wartungBemerkung">Bemerkungen</label>
+    <textarea id="wartungBemerkung"></textarea>
+
+    <label for="wartungFoto">Foto (optional)</label>
+    <input id="wartungFoto" type="file" accept="image/*" capture="environment" />
+
+    <button type="button" onclick="saveWartung()">Wartung speichern</button>
+    <div id="wartungStatus" class="status"></div>
+  </div>
+
+  <label>Bemerkung</label>
+  <textarea id="bemerkung"></textarea>
+
+  <button onclick="saveCleaning()">Reinigung speichern</button>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-storage-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBo-pt3krDP9c5AxojmWaHVqPkoqmupOvA",
+    authDomain: "digitales-bordbuch.firebaseapp.com",
+    projectId: "digitales-bordbuch",
+    storageBucket: "digitales-bordbuch.appspot.com",
+    messagingSenderId: "612073997080",
+    appId: "1:612073997080:web:762a85694716da8f84546d",
+    measurementId: "G-VRX8Q8QNDH"
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  window.storage = firebase.storage();
+</script>
+
+<!-- App-Logik -->
+<script src="app.js"></script>
+
+<!-- UI-Helfer GANZ ZUM SCHLUSS -->
+<script>
+function toggleSection(id, header) {
+  const section = document.getElementById(id);
+  if (!section) return;
+
+  const arrow = header.querySelector('.arrow');
+  const isOpen = section.style.display === 'block';
+
+  section.style.display = isOpen ? 'none' : 'block';
+  if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
+}
+</script>
+
+</body>
+</html>
+
