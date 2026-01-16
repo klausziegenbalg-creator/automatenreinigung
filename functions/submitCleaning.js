@@ -116,10 +116,39 @@ exports.submitCleaning = functions
         staebe: Number(data.staebe || 0),
 
         // ===============================
+        // Punkt 5 – Bestellungen
+        // ===============================
+        bestellungen: Array.isArray(data.bestellungen)
+          ? data.bestellungen
+          : [],
+
+        // ===============================
         // Texte
         // ===============================
         auffaelligkeiten: data.auffaelligkeiten || ""
       });
+
+      const orders = Array.isArray(data.bestellungen)
+        ? data.bestellungen
+        : [];
+
+      if (orders.length > 0) {
+        const batch = admin.firestore().batch();
+        orders.forEach((typ) => {
+          const ref = admin.firestore().collection("bestellungen").doc();
+          batch.set(ref, {
+            automat: data.automatCode,
+            stadt: data.stadt,
+            center: data.center,
+            mitarbeiter: data.mitarbeiter,
+            typ: String(typ || ""),
+            status: "bestellt",
+            datum: admin.firestore.Timestamp.fromDate(datumDate),
+            timestamp: admin.firestore.FieldValue.serverTimestamp()
+          });
+        });
+        await batch.commit();
+      }
 
       return res.json({ ok: true });
 

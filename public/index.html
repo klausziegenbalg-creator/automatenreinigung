@@ -9,6 +9,13 @@
       padding: 16px;
       max-width: 600px;
       margin: auto;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(120, 165, 255, 0.35), transparent 45%),
+        radial-gradient(circle at 80% 0%, rgba(160, 200, 255, 0.28), transparent 40%),
+        linear-gradient(135deg, #f6f9ff, #e7f0ff);
+      min-height: 100vh;
+      color: #1f1b1b;
+      animation: glowShift 14s ease-in-out infinite;
     }
 
     h1 { font-size: 28px; margin-bottom: 12px; }
@@ -20,6 +27,10 @@
       margin-top: 8px;
       font-size: 16px;
       box-sizing: border-box;
+      border-radius: 12px;
+      border: 1px solid rgba(140, 160, 200, 0.35);
+      background: rgba(255, 255, 255, 0.85);
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     label {
@@ -29,15 +40,27 @@
     }
 
     .box {
-      border-top: 1px solid #ccc;
+      border-top: 1px solid rgba(170, 190, 220, 0.35);
       margin-top: 20px;
       padding-top: 16px;
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(60, 90, 140, 0.08);
+      backdrop-filter: blur(6px);
     }
 
     .status {
       margin-top: 10px;
       min-height: 22px;
       font-weight: bold;
+    }
+
+    .error-details {
+      font-weight: 500;
+      color: #8b1d1d;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
     .last {
@@ -69,9 +92,9 @@
       gap: 10px;
       margin-top: 10px;
       padding: 8px 10px;
-      border: 1px solid #e0e0e0;
+      border: 1px solid rgba(160, 180, 210, 0.35);
       border-radius: 8px;
-      background: #fafafa;
+      background: rgba(255, 255, 255, 0.75);
       cursor: pointer;
     }
 
@@ -90,9 +113,9 @@
 
     .bestaende-item {
       padding: 10px;
-      border: 1px solid #e0e0e0;
+      border: 1px solid rgba(160, 180, 210, 0.35);
       border-radius: 10px;
-      background: #fafafa;
+      background: rgba(255, 255, 255, 0.75);
     }
 
     .order-grid {
@@ -105,15 +128,53 @@
     .order-btn {
       padding: 14px;
       border-radius: 10px;
-      border: 1px solid #ccc;
-      background: #f5f5f5;
+      border: 1px solid rgba(160, 180, 210, 0.4);
+      background: #ffffff;
       font-size: 16px;
       cursor: pointer;
+      box-shadow: 0 6px 18px rgba(60, 90, 140, 0.08);
+    }
+
+    .order-btn.is-selected {
+      border-color: rgba(60, 110, 200, 0.7);
+      box-shadow: 0 10px 22px rgba(70, 120, 200, 0.2);
+      background: rgba(230, 240, 255, 0.9);
     }
 
     .photo-box {
       margin-top: 6px;
       font-size: 14px;
+    }
+
+    button {
+      background: #ffffff;
+      border: 1px solid rgba(130, 160, 200, 0.45);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(70, 110, 160, 0.12);
+    }
+
+    button:hover {
+      border-color: rgba(110, 145, 200, 0.55);
+      box-shadow: 0 10px 22px rgba(80, 120, 180, 0.16);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: rgba(90, 130, 210, 0.7);
+      box-shadow: 0 0 0 3px rgba(120, 160, 255, 0.18);
+    }
+
+    @keyframes glowShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
 
     /* ===== FIX 1 – STATUS & BUTTON FEEDBACK ===== */
@@ -146,6 +207,7 @@
 <input id="pin" placeholder="PIN eingeben" />
 <button onclick="login()">Login</button>
 <div id="status" class="status"></div>
+<div id="errorDetails" class="status error-details"></div>
 
 <div class="box">
   <label>Stadt</label>
@@ -222,12 +284,13 @@
   </div>
   <div id="sec5" style="display:none">
     <div class="order-grid">
-      <button class="order-btn">🍓 Rot</button>
-      <button class="order-btn">🍭 Gelb</button>
-      <button class="order-btn">🫐 Blau</button>
-      <button class="order-btn">🍭 Weiß</button>
-      <button class="order-btn">🧊 Stäbe</button>
+      <button class="order-btn" data-order="rot">🍓 Rot</button>
+      <button class="order-btn" data-order="gelb">🍭 Gelb</button>
+      <button class="order-btn" data-order="blau">🫐 Blau</button>
+      <button class="order-btn" data-order="weiss">🍭 Weiß</button>
+      <button class="order-btn" data-order="staebe">🧊 Stäbe</button>
     </div>
+    <div id="orderStatus" class="status"></div>
   </div>
 
   <!-- 6. Wochenwartung -->
@@ -244,7 +307,7 @@
     <span>Brennerkopf reinigen & öffnen</span>
   </label>
   <div class="photo-box">
-    <input type="file" accept="image/*" capture="environment">
+    <input type="file" accept="image/*" capture="environment" data-task-id="wk_brennerkopf_oeffnen">
   </div>
 
   <label class="task">
@@ -252,7 +315,7 @@
     <span>Wasserbehälter Frischwasser leeren und reinigen</span>
   </label>
   <div class="photo-box">
-    <input type="file" accept="image/*" capture="environment">
+    <input type="file" accept="image/*" capture="environment" data-task-id="wk_wasserbehaelter_reinigen">
   </div>
 
   <label class="task">
@@ -260,7 +323,7 @@
     <span>Entkalkung der Frischwasseranlage</span>
   </label>
   <div class="photo-box">
-    <input type="file" accept="image/*" capture="environment">
+    <input type="file" accept="image/*" capture="environment" data-task-id="wk_entkalkung_frischwasser">
   </div>
 
   <label class="task">
@@ -268,7 +331,7 @@
     <span>Brenner rund herum reinigen</span>
   </label>
   <div class="photo-box">
-    <input type="file" accept="image/*" capture="environment">
+    <input type="file" accept="image/*" capture="environment" data-task-id="wk_brenner_rundum">
   </div>
 
   <button
@@ -352,4 +415,3 @@ function toggleSection(id, header) {
 
 </body>
 </html>
-

@@ -10,6 +10,9 @@
   "functions": {
     "source": "functions"
   },
+  "storage": {
+    "rules": "storage.rules"
+  },
   "runtime": {
     "nodeVersion": "18"
   }

@@ -48,7 +48,8 @@ exports.submitWartung = functions
         name,
         wartungselementId,
         bezeichnung,
-        bemerkung
+        bemerkung,
+        photoUrl
       } = data;
 
       // -------------------------------
@@ -97,6 +98,10 @@ exports.submitWartung = functions
         bezeichnung: finalBezeichnung,
         wartungselementId: wartungselementId || null,
         bemerkung: bemerkung || "",
+        photoUrl:
+          typeof photoUrl === "string" && photoUrl.startsWith("https://")
+            ? photoUrl
+            : "",
         quelle: "reiniger-app",
         erstelltAm: admin.firestore.FieldValue.serverTimestamp()
       });

@@ -29,19 +29,40 @@ exports.loadLastCleaning = functions
         return res.json({ ok: true, last: null });
       }
 
-      const snap = await admin
-        .firestore()
-        .collection("reinigungen")
-        .where("automatCode", "==", automatCode)
-        .orderBy("datum", "desc")
-        .limit(1)
-        .get();
+      let doc = null;
 
-      if (snap.empty) {
-        return res.json({ ok: true, last: null });
+      try {
+        const snap = await admin
+          .firestore()
+          .collection("reinigungen")
+          .where("automatCode", "==", automatCode)
+          .orderBy("datum", "desc")
+          .limit(1)
+          .get();
+
+        if (!snap.empty) {
+          doc = snap.docs[0].data();
+        }
+      } catch (err) {
+        console.warn("loadLastCleaning fallback:", err?.message || err);
+        const snap = await admin
+          .firestore()
+          .collection("reinigungen")
+          .where("automatCode", "==", automatCode)
+          .limit(50)
+          .get();
+
+        if (!snap.empty) {
+          doc = snap.docs
+            .map(entry => entry.data())
+            .filter(entry => entry?.datum?.toDate)
+            .sort((a, b) => b.datum.toDate() - a.datum.toDate())[0];
+        }
       }
 
-      const doc = snap.docs[0].data();
+      if (!doc) {
+        return res.json({ ok: true, last: null });
+      }
 
       return res.json({
         ok: true,
