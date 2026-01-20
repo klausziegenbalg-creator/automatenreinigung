@@ -146,6 +146,29 @@
       font-size: 14px;
     }
 
+    .lang-switch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .lang-btn {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(130, 160, 200, 0.45);
+      background: rgba(255, 255, 255, 0.85);
+      font-size: 14px;
+      cursor: pointer;
+      width: auto;
+    }
+
+    .lang-btn.active {
+      background: rgba(210, 225, 255, 0.9);
+      border-color: rgba(90, 130, 210, 0.7);
+      font-weight: 600;
+    }
+
     button {
       background: #ffffff;
       border: 1px solid rgba(130, 160, 200, 0.45);
@@ -202,19 +225,26 @@
 
 <body>
 
-<h1>Reiniger App</h1>
+<div class="lang-switch" aria-label="Sprache wählen">
+  <button type="button" class="lang-btn" data-lang="de">DE</button>
+  <button type="button" class="lang-btn" data-lang="en">EN</button>
+  <button type="button" class="lang-btn" data-lang="tr">TR</button>
+  <button type="button" class="lang-btn" data-lang="ar">AR</button>
+</div>
 
-<input id="pin" placeholder="PIN eingeben" />
-<button onclick="login()">Login</button>
+<h1 data-i18n="title">Reiniger App</h1>
+
+<input id="pin" data-i18n-placeholder="pin_placeholder" placeholder="PIN eingeben" />
+<button onclick="login()" data-i18n="login">Login</button>
 <div id="status" class="status"></div>
 <div id="errorDetails" class="status error-details"></div>
 
 <div class="box">
-  <label>Stadt</label>
+  <label data-i18n="city">Stadt</label>
   <select id="stadtSelect"><option>– bitte einloggen –</option></select>
-  <label>Center</label>
+  <label data-i18n="center">Center</label>
   <select id="centerSelect"><option>– bitte einloggen –</option></select>
-  <label>Automat</label>
+  <label data-i18n="machine">Automat</label>
   <select id="automatSelect"><option>– bitte einloggen –</option></select>
 </div>
 
@@ -222,73 +252,73 @@
 
 <div id="cleaningForm" class="box" style="display:none">
 
-  <label for="datum">Datum</label>
+  <label for="datum" data-i18n="date">Datum</label>
   <input type="date" id="datum" />
 
   <!-- 2. Aufgaben -->
   <div class="section-header" onclick="toggleSection('sec2', this)">
-    <h3>2. Aufgaben pro Automat</h3><div class="arrow">▼</div>
+    <h3 data-i18n="sec2">2. Aufgaben pro Automat</h3><div class="arrow">▼</div>
   </div>
   <div id="sec2" style="display:none">
-    <label class="task"><input type="checkbox" id="zucker"><span>Zucker aufgefüllt</span></label>
-    <label class="task"><input type="checkbox" id="wasser"><span>Wasser aufgefüllt</span></label>
-    <label class="task"><input type="checkbox" id="staebeAuf"><span>Stäbe aufgefüllt</span></label>
-    <label class="task"><input type="checkbox" id="zuckerfach"><span>Zuckerfach gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="faecher"><span>Alle Fächer gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="abwasser"><span>Abwasser entleert</span></label>
-    <label class="task"><input type="checkbox" id="produktionsraum"><span>Produktionsraum gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="messer"><span>Messer + Rädchen gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="roboterarm"><span>Roboterarm gründlich gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="sieb"><span>Sieb oben gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="auffangschale"><span>Auffangschale gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="aufbewahrung"><span>Aufbewahrungsfach aufgeräumt</span></label>
-    <label class="task"><input type="checkbox" id="aussen"><span>Automat außen gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="scheiben"><span>Scheiben gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="brennerkopf"><span>Brennerkopf gereinigt</span></label>
-    <label class="task"><input type="checkbox" id="duese"><span>Düse hinter Brennerkopf gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="zucker"><span data-i18n="chk_zucker">Zucker aufgefüllt</span></label>
+    <label class="task"><input type="checkbox" id="wasser"><span data-i18n="chk_wasser">Wasser aufgefüllt</span></label>
+    <label class="task"><input type="checkbox" id="staebeAuf"><span data-i18n="chk_staebeAuf">Stäbe aufgefüllt</span></label>
+    <label class="task"><input type="checkbox" id="zuckerfach"><span data-i18n="chk_zuckerfach">Zuckerfach gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="faecher"><span data-i18n="chk_faecher">Alle Fächer gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="abwasser"><span data-i18n="chk_abwasser">Abwasser entleert</span></label>
+    <label class="task"><input type="checkbox" id="produktionsraum"><span data-i18n="chk_produktionsraum">Produktionsraum gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="messer"><span data-i18n="chk_messer">Messer + Rädchen gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="roboterarm"><span data-i18n="chk_roboterarm">Roboterarm gründlich gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="sieb"><span data-i18n="chk_sieb">Sieb oben gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="auffangschale"><span data-i18n="chk_auffangschale">Auffangschale gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="aufbewahrung"><span data-i18n="chk_aufbewahrung">Aufbewahrungsfach aufgeräumt</span></label>
+    <label class="task"><input type="checkbox" id="aussen"><span data-i18n="chk_aussen">Automat außen gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="scheiben"><span data-i18n="chk_scheiben">Scheiben gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="brennerkopf"><span data-i18n="chk_brennerkopf">Brennerkopf gereinigt</span></label>
+    <label class="task"><input type="checkbox" id="duese"><span data-i18n="chk_duese">Düse hinter Brennerkopf gereinigt</span></label>
   </div>
 
   <!-- 3. Funktionsprüfung -->
   <div class="section-header" onclick="toggleSection('sec3', this)">
-    <h3>3. Funktionsprüfung</h3><div class="arrow">▼</div>
+    <h3 data-i18n="sec3">3. Funktionsprüfung</h3><div class="arrow">▼</div>
   </div>
   <div id="sec3" style="display:none">
-    <label class="task"><input type="checkbox" id="befeuchtung"><span>Befeuchtungstest</span></label>
-    <label class="task"><input type="checkbox" id="reinigungstest"><span>Reinigungstest</span></label>
-    <label class="task"><input type="checkbox" id="neuer_stab"><span>Neuen Stab genommen</span></label>
-    <label class="task"><input type="checkbox" id="roboterarm_90grad"><span>Roboterarm im 90°-Winkel</span></label>
-    <label class="task"><input type="checkbox" id="kreditkarte_ok"><span>Kreditkartensystem OK</span></label>
-    <label class="task"><input type="checkbox" id="geldschein_ok"><span>Geldschein-System OK</span></label>
-    <label class="task"><input type="checkbox" id="material_eingetragen"><span>Material im System eingetragen</span></label>
-    <label>Auffälligkeiten</label>
+    <label class="task"><input type="checkbox" id="befeuchtung"><span data-i18n="chk_befeuchtung">Befeuchtungstest</span></label>
+    <label class="task"><input type="checkbox" id="reinigungstest"><span data-i18n="chk_reinigungstest">Reinigungstest</span></label>
+    <label class="task"><input type="checkbox" id="neuer_stab"><span data-i18n="chk_neuer_stab">Neuen Stab genommen</span></label>
+    <label class="task"><input type="checkbox" id="roboterarm_90grad"><span data-i18n="chk_roboterarm_90grad">Roboterarm im 90°-Winkel</span></label>
+    <label class="task"><input type="checkbox" id="kreditkarte_ok"><span data-i18n="chk_kreditkarte_ok">Kreditkartensystem OK</span></label>
+    <label class="task"><input type="checkbox" id="geldschein_ok"><span data-i18n="chk_geldschein_ok">Geldschein-System OK</span></label>
+    <label class="task"><input type="checkbox" id="material_eingetragen"><span data-i18n="chk_material_eingetragen">Material im System eingetragen</span></label>
+    <label data-i18n="notes">Auffälligkeiten</label>
     <textarea id="auffaelligkeiten"></textarea>
   </div>
 
   <!-- 4. Bestände (unverändert) -->
   <div class="section-header" onclick="toggleSection('sec4', this)">
-    <h3>4. Bestände</h3><div class="arrow">▼</div>
+    <h3 data-i18n="sec4">4. Bestände</h3><div class="arrow">▼</div>
   </div>
   <div id="sec4" style="display:none">
     <div class="bestaende-grid">
-      <div class="bestaende-item"><label>Roter Zucker</label><input type="number" step="0.5" id="zucker_rot"></div>
-      <div class="bestaende-item"><label>Gelber Zucker</label><input type="number" step="0.5" id="zucker_gelb"></div>
-      <div class="bestaende-item"><label>Blauer Zucker</label><input type="number" step="0.5" id="zucker_blau"></div>
-      <div class="bestaende-item"><label>Weißer Zucker</label><input type="number" step="0.5" id="zucker_weiss"></div>
-      <div class="bestaende-item"><label>Stäbe (Pakete)</label><input type="number" step="0.5" id="staebe"></div>
+      <div class="bestaende-item"><label data-i18n="stock_red">Roter Zucker</label><input type="number" step="0.5" id="zucker_rot"></div>
+      <div class="bestaende-item"><label data-i18n="stock_yellow">Gelber Zucker</label><input type="number" step="0.5" id="zucker_gelb"></div>
+      <div class="bestaende-item"><label data-i18n="stock_blue">Blauer Zucker</label><input type="number" step="0.5" id="zucker_blau"></div>
+      <div class="bestaende-item"><label data-i18n="stock_white">Weißer Zucker</label><input type="number" step="0.5" id="zucker_weiss"></div>
+      <div class="bestaende-item"><label data-i18n="stock_sticks">Stäbe (Pakete)</label><input type="number" step="0.5" id="staebe"></div>
     </div>
   </div>
 
   <!-- 5. Bestellungen (unverändert) -->
   <div class="section-header" onclick="toggleSection('sec5', this)">
-    <h3>5. Bestellungen</h3><div class="arrow">▼</div>
+    <h3 data-i18n="sec5">5. Bestellungen</h3><div class="arrow">▼</div>
   </div>
   <div id="sec5" style="display:none">
     <div class="order-grid">
-      <button class="order-btn" data-order="rot">🍓 Rot</button>
-      <button class="order-btn" data-order="gelb">🍭 Gelb</button>
-      <button class="order-btn" data-order="blau">🫐 Blau</button>
-      <button class="order-btn" data-order="weiss">🍭 Weiß</button>
-      <button class="order-btn" data-order="staebe">🧊 Stäbe</button>
+      <button class="order-btn" data-order="rot" data-i18n="order_red">🍓 Rot</button>
+      <button class="order-btn" data-order="gelb" data-i18n="order_yellow">🍭 Gelb</button>
+      <button class="order-btn" data-order="blau" data-i18n="order_blue">🫐 Blau</button>
+      <button class="order-btn" data-order="weiss" data-i18n="order_white">🍭 Weiß</button>
+      <button class="order-btn" data-order="staebe" data-i18n="order_sticks">🧊 Stäbe</button>
     </div>
     <div id="orderStatus" class="status"></div>
   </div>
@@ -296,7 +326,7 @@
   <!-- 6. Wochenwartung -->
   <!-- 6. Wochenwartung -->
 <div class="section-header" onclick="toggleSection('sec6', this)">
-  <h3>6. Wochenwartung</h3>
+  <h3 data-i18n="sec6">6. Wochenwartung</h3>
   <div class="arrow">▼</div>
 </div>
 
@@ -338,7 +368,7 @@
     type="button"
     id="btnWochenwartung"
     onclick="saveWochenWartung()">
-    Wochenwartung speichern
+    <span data-i18n="save_weekly">Wochenwartung speichern</span>
   </button>
 
   <div id="wochenStatus" class="status"></div>
@@ -347,31 +377,31 @@
 
   <!-- 7. Wartung (unverändert) -->
   <div class="section-header" onclick="toggleSection('sec7', this); onWartungToggle();">
-    <h3>7. Reparaturen / Wartung</h3><div class="arrow">▼</div>
+    <h3 data-i18n="sec7">7. Reparaturen / Wartung</h3><div class="arrow">▼</div>
   </div>
   <div id="sec7" style="display:none">
-    <label for="wartungSelect">Wartungselement (optional)</label>
+    <label for="wartungSelect" data-i18n="maintenance_element">Wartungselement (optional)</label>
     <select id="wartungSelect" disabled>
       <option value="">– wird geladen … –</option>
     </select>
 
-    <label for="wartungFreitext">oder Freitext (optional)</label>
+    <label for="wartungFreitext" data-i18n="maintenance_free">oder Freitext (optional)</label>
     <input id="wartungFreitext" type="text"/>
 
-    <label for="wartungBemerkung">Bemerkungen</label>
+    <label for="wartungBemerkung" data-i18n="maintenance_notes">Bemerkungen</label>
     <textarea id="wartungBemerkung"></textarea>
 
-    <label for="wartungFoto">Foto (optional)</label>
+    <label for="wartungFoto" data-i18n="maintenance_photo">Foto (optional)</label>
     <input id="wartungFoto" type="file" accept="image/*" capture="environment" />
 
-    <button type="button" onclick="saveWartung()">Wartung speichern</button>
+    <button type="button" onclick="saveWartung()" data-i18n="save_maintenance">Wartung speichern</button>
     <div id="wartungStatus" class="status"></div>
   </div>
 
-  <label>Bemerkung</label>
+  <label data-i18n="comment">Bemerkung</label>
   <textarea id="bemerkung"></textarea>
 
-  <button onclick="saveCleaning()">Reinigung speichern</button>
+  <button onclick="saveCleaning()" data-i18n="save_cleaning">Reinigung speichern</button>
 </div>
 
 <!-- Firebase -->
@@ -398,6 +428,7 @@
 
 <!-- App-Logik -->
 <script src="app.js"></script>
+<script src="i18n.js"></script>
 
 <!-- UI-Helfer GANZ ZUM SCHLUSS -->
 <script>

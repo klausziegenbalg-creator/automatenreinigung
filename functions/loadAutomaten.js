@@ -39,16 +39,25 @@ exports.loadAutomaten = functions
       // TEAMLEITER → NUR STADT
       // =========================
       else if (role === "teamleiter") {
-        if (!stadt) {
-          return res.json({ ok: false, error: "stadt fehlt" });
+        const trimmedName = (name || "").trim();
+
+        if (stadt) {
+          const snap = await db
+            .collection("automaten")
+            .where("stadt", "==", stadt)
+            .get();
+
+          automaten = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        } else if (trimmedName) {
+          const snap = await db
+            .collection("automaten")
+            .where("leitung", "==", trimmedName)
+            .get();
+
+          automaten = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        } else {
+          return res.json({ ok: false, error: "stadt oder name fehlt" });
         }
-
-        const snap = await db
-          .collection("automaten")
-          .where("stadt", "==", stadt)
-          .get();
-
-        automaten = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       }
 
       // =========================

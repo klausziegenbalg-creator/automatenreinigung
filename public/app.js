@@ -237,6 +237,10 @@ async function loadAutomaten(options = {}) {
     });
 
     const data = await res.json();
+    if (!data?.ok) {
+      setStatus(data?.error ? `❌ ${data.error}` : "❌ Automaten konnten nicht geladen werden");
+      return;
+    }
     automaten = Array.isArray(data.automaten) ? data.automaten : [];
     if (automaten.length) writeAutomatenCache(automaten);
     buildSelectors();

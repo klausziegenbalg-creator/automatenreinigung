@@ -43,17 +43,17 @@ exports.verifyPin = functions.https.onRequest(async (req, res) => {
     }
 
     // 2️⃣ Stadt aus Automaten ableiten
-    let stadt = "";
+    let stadt = (pinData.stadt || "").trim();
 
     const autoSnap = await db.collection("automaten").get();
     autoSnap.forEach(doc => {
       const a = doc.data();
 
-      if (role === "teamleiter" && a.leitung === name && a.stadt) {
+      if (!stadt && role === "teamleiter" && a.leitung === name && a.stadt) {
         stadt = a.stadt;
       }
 
-      if (role === "mitarbeiter" && a.mitarbeiter === name && a.stadt) {
+      if (!stadt && role === "mitarbeiter" && a.mitarbeiter === name && a.stadt) {
         stadt = a.stadt;
       }
     });
